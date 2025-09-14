@@ -1,22 +1,30 @@
 {
   "name": "fingerprint",
   "version": "1.0.0",
-  "description": "fingerprint create packeg",
+  "description": "Lightweight browser + Node.js fingerprint generator",
   "main": "/dist/index.js",
   "module": "/dist/index.mjs",
   "type": "module",
   "types": "/dist/index.d.ts",
+  "repository": {
+    "url": "https://github.com/nasimahmed895/fingerprint"
+  },
   "scripts": {
     "build": "tsup"
   },
   "keywords": [
     "fingerprint",
-    "brwoser fingerprint"
+    "browser",
+    "device",
+    "security"
   ],
-  "author": "md subho",
+  "author": "Md Subho",
   "license": "ISC",
   "dependencies": {
     "tsup": "^8.5.0",
     "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.4.0"
   }
 }
