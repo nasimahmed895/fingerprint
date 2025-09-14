@@ -1,0 +1,22 @@
+{
+  "name": "fingerprint",
+  "version": "1.0.0",
+  "description": "fingerprint create packeg",
+  "main": "/dist/index.js",
+  "module": "/dist/index.mjs",
+  "type": "module",
+  "types": "/dist/index.d.ts",
+  "scripts": {
+    "build": "tsup"
+  },
+  "keywords": [
+    "fingerprint",
+    "brwoser fingerprint"
+  ],
+  "author": "md subho",
+  "license": "ISC",
+  "dependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2"
+  }
+}
