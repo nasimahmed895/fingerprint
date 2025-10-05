@@ -1,6 +1,6 @@
 {
   "name": "user-trace-fingerprint",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A module for generating device fingerprints, retrieving device information, and fetching IP information, for both client and server-side usage.",
   "main": "/dist/index.js",
   "module": "/dist/index.mjs",
