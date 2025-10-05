@@ -1,21 +1,13 @@
 export {
-    generateFingerprint,
-    storeFingerprint,
-    getStoredFingerprint,
-    deleteFingerprint,
-    compareFingerprint,
-    isFingerprintValid,
-    logFingerprintData,
-    updateFingerprint,
-
+    generateFingerprint, // server or cleient side use 
 } from "./core";
 
 
 export {
-    getDeviceInfo,
+    getDeviceInfo, // client side 
 } from "./device";
 
 
 export {
     getIP,
-} from "./ip";
+} from "./ip";// server or cleient side use 

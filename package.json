@@ -1,12 +1,13 @@
 {
-  "name": "fingerprint",
+  "name": "user-trace-fingerprint",
   "version": "1.0.0",
-  "description": "Lightweight browser + Node.js fingerprint generator",
+  "description": "A module for generating device fingerprints, retrieving device information, and fetching IP information, for both client and server-side usage.",
   "main": "/dist/index.js",
   "module": "/dist/index.mjs",
   "type": "module",
   "types": "/dist/index.d.ts",
   "repository": {
+    "type": "git",
     "url": "https://github.com/nasimahmed895/fingerprint"
   },
   "scripts": {
@@ -14,11 +15,19 @@
   },
   "keywords": [
     "fingerprint",
-    "browser",
-    "device",
-    "security"
+    "device info",
+    "IP information",
+    "client-side",
+    "server-side",
+    "network",
+    "user-agent",
+    "IP geolocation"
   ],
-  "author": "Md Subho",
+  "author": {
+    "name": "Md Subho",
+    "email": "subhoislam624@gmail.com",
+    "url": "https://github.com/nasimahmed895"
+  },
   "license": "ISC",
   "dependencies": {
     "tsup": "^8.5.0",

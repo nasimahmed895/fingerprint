@@ -1,6 +1,5 @@
 import { getDeviceInfo } from "./device";
 import { getIP } from "./ip";
-import { setStorage, getStorage, deleteStorage } from "./storage";
 
 const DEFAULT_KEY = process.env.FP_COOKIE_KEY || "fp_id";
 
@@ -27,37 +26,3 @@ export function generateFingerprint(length = 32): string {
     return fingerprint.slice(0, length);
 }
 
-export async function storeFingerprint(id: string) {
-    return setStorage(DEFAULT_KEY, id);
-}
-
-export function getStoredFingerprint(): string | null {
-    return getStorage(DEFAULT_KEY);
-}
-
-export function deleteFingerprint(): void {
-    deleteStorage(DEFAULT_KEY);
-}
-
-export function compareFingerprint(id: string): boolean {
-    const stored = getStoredFingerprint();
-    return stored === id;
-}
-
-export function isFingerprintValid(id: string): boolean {
-    return typeof id === "string" && id.length > 0;
-}
-
-export async function logFingerprintData() {
-    return {
-        fingerprint: getStoredFingerprint(),
-        device: getDeviceInfo(),
-        ip: await getIP(),
-    };
-}
-
-export async function updateFingerprint() {
-    const newId = generateFingerprint();
-    await storeFingerprint(newId);
-    return newId;
-}
