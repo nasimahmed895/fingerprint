@@ -1,66 +1,3 @@
-// src/device.ts
-function getDeviceInfo() {
-  if (typeof navigator === "undefined") {
-    return { platform: process.platform, node: process.version };
-  }
-  return {
-    userAgent: navigator.userAgent,
-    platform: navigator.platform,
-    language: navigator.language,
-    screen: {
-      width: window.screen.width,
-      height: window.screen.height
-    }
-  };
-}
-
-// src/ip.ts
-async function getIP() {
-  if (typeof fetch === "undefined") return null;
-  try {
-    const res = await fetch("https://api64.ipify.org?format=json");
-    const data = await res.json();
-    return data.ip;
-  } catch {
-    return null;
-  }
-}
-
-// src/storage.ts
-function setStorage(key, value) {
-  if (typeof window !== "undefined") {
-    try {
-      localStorage.setItem(key, value);
-      document.cookie = `${key}=${value}; path=/; max-age=31536000`;
-    } catch {
-    }
-  } else {
-    globalThis[key] = value;
-  }
-}
-function getStorage(key) {
-  if (typeof window !== "undefined") {
-    try {
-      return localStorage.getItem(key) || null;
-    } catch {
-      return null;
-    }
-  } else {
-    return globalThis[key] || null;
-  }
-}
-function deleteStorage(key) {
-  if (typeof window !== "undefined") {
-    try {
-      localStorage.removeItem(key);
-      document.cookie = `${key}=; Max-Age=0`;
-    } catch {
-    }
-  } else {
-    delete globalThis[key];
-  }
-}
-
 // src/core.ts
 var DEFAULT_KEY = process.env.FP_COOKIE_KEY || "fp_id";
 function generateFingerprint(length = 32) {
@@ -81,43 +18,78 @@ function generateFingerprint(length = 32) {
   }
   return fingerprint.slice(0, length);
 }
-async function storeFingerprint(id) {
-  return setStorage(DEFAULT_KEY, id);
-}
-function getStoredFingerprint() {
-  return getStorage(DEFAULT_KEY);
-}
-function deleteFingerprint() {
-  deleteStorage(DEFAULT_KEY);
-}
-function compareFingerprint(id) {
-  const stored = getStoredFingerprint();
-  return stored === id;
-}
-function isFingerprintValid(id) {
-  return typeof id === "string" && id.length > 0;
-}
-async function logFingerprintData() {
+
+// src/device.ts
+function getDeviceInfo() {
+  if (typeof navigator === "undefined") {
+    return {
+      environment: "node",
+      platform: process.platform,
+      nodeVersion: process.version,
+      cpuArch: process.arch,
+      memoryUsage: process.memoryUsage(),
+      uptime: process.uptime()
+    };
+  }
   return {
-    fingerprint: getStoredFingerprint(),
-    device: getDeviceInfo(),
-    ip: await getIP()
+    environment: "browser",
+    userAgent: navigator.userAgent,
+    platform: navigator.platform,
+    language: navigator.language,
+    languages: navigator.languages,
+    hardwareConcurrency: navigator.hardwareConcurrency,
+    deviceMemory: navigator.mediaDevices || "unknown",
+    // in GB (may not be supported)
+    screen: {
+      width: window.screen.width,
+      height: window.screen.height,
+      availWidth: window.screen.availWidth,
+      availHeight: window.screen.availHeight,
+      colorDepth: window.screen.colorDepth,
+      pixelDepth: window.screen.pixelDepth
+    },
+    window: {
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+      outerWidth: window.outerWidth,
+      outerHeight: window.outerHeight
+    },
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    online: navigator.onLine,
+    touchSupport: {
+      maxTouchPoints: navigator.maxTouchPoints,
+      touchEvent: "ontouchstart" in window
+    }
   };
 }
-async function updateFingerprint() {
-  const newId = generateFingerprint();
-  await storeFingerprint(newId);
-  return newId;
+
+// src/ip.ts
+async function getIP(apiKey) {
+  if (typeof fetch === "undefined") return null;
+  const key = apiKey ? `&key=${apiKey}` : "";
+  try {
+    const res = await fetch("https://api64.ipify.org?format=json");
+    const data = await res.json();
+    const returnData = `?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,district,zip,lat,lon,timezone,offset,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query`;
+    const url = process.env.NODE_ENV === "development" ? `http://ip-api.com/json/${data.ip}${returnData}${key}` : `https://ip-api.com/json/${data.ip}${returnData}${key}`;
+    const resIPInformation = await fetch(url);
+    const dataIPInformation = await resIPInformation.json();
+    console.log(dataIPInformation);
+    if (dataIPInformation.status === "success") {
+      delete dataIPInformation.query;
+      return { ...dataIPInformation, ip: data.ip };
+    } else {
+      return { ...data, status: "success" };
+    }
+  } catch {
+    return {
+      status: "fail",
+      message: "unavailable to service"
+    };
+  }
 }
 export {
-  compareFingerprint,
-  deleteFingerprint,
   generateFingerprint,
   getDeviceInfo,
-  getIP,
-  getStoredFingerprint,
-  isFingerprintValid,
-  logFingerprintData,
-  storeFingerprint,
-  updateFingerprint
+  getIP
 };

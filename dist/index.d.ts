@@ -1,48 +1,56 @@
 declare function generateFingerprint(length?: number): string;
-declare function storeFingerprint(id: string): Promise<void>;
-declare function getStoredFingerprint(): string | null;
-declare function deleteFingerprint(): void;
-declare function compareFingerprint(id: string): boolean;
-declare function isFingerprintValid(id: string): boolean;
-declare function logFingerprintData(): Promise<{
-    fingerprint: string | null;
-    device: {
-        platform: NodeJS.Platform;
-        node: string;
-        userAgent?: undefined;
-        language?: undefined;
-        screen?: undefined;
-    } | {
-        userAgent: string;
-        platform: string;
-        language: string;
-        screen: {
-            width: number;
-            height: number;
-        };
-        node?: undefined;
-    };
-    ip: any;
-}>;
-declare function updateFingerprint(): Promise<string>;
 
 declare function getDeviceInfo(): {
+    environment: string;
     platform: NodeJS.Platform;
-    node: string;
+    nodeVersion: string;
+    cpuArch: NodeJS.Architecture;
+    memoryUsage: NodeJS.MemoryUsage;
+    uptime: number;
     userAgent?: undefined;
     language?: undefined;
+    languages?: undefined;
+    hardwareConcurrency?: undefined;
+    deviceMemory?: undefined;
     screen?: undefined;
+    window?: undefined;
+    timezone?: undefined;
+    online?: undefined;
+    touchSupport?: undefined;
 } | {
+    environment: string;
     userAgent: string;
     platform: string;
     language: string;
+    languages: readonly string[];
+    hardwareConcurrency: number;
+    deviceMemory: MediaDevices;
     screen: {
         width: number;
         height: number;
+        availWidth: number;
+        availHeight: number;
+        colorDepth: number;
+        pixelDepth: number;
     };
-    node?: undefined;
+    window: {
+        innerWidth: number;
+        innerHeight: number;
+        outerWidth: number;
+        outerHeight: number;
+    };
+    timezone: string;
+    online: boolean;
+    touchSupport: {
+        maxTouchPoints: number;
+        touchEvent: boolean;
+    };
+    nodeVersion?: undefined;
+    cpuArch?: undefined;
+    memoryUsage?: undefined;
+    uptime?: undefined;
 };
 
-declare function getIP(): Promise<any>;
+declare function getIP(apiKey?: string): Promise<any>;
 
-export { compareFingerprint, deleteFingerprint, generateFingerprint, getDeviceInfo, getIP, getStoredFingerprint, isFingerprintValid, logFingerprintData, storeFingerprint, updateFingerprint };
+export { generateFingerprint, getDeviceInfo, getIP };
