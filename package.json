@@ -1,11 +1,18 @@
 {
   "name": "user-trace-fingerprint",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A module for generating device fingerprints, retrieving device information, and fetching IP information, for both client and server-side usage.",
-  "main": "/dist/index.js",
+  "main": "dist/index.js",
   "module": "/dist/index.mjs",
   "type": "module",
-  "types": "/dist/index.d.ts",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/nasimahmed895/fingerprint"
